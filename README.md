@@ -1,10 +1,13 @@
 # Federated Learning for IoT Anomaly Detection
 
+## Introduction
+With the rapid increase of IoT (Internet of Things) devices, protecting them from cyber threats and detecting unusual network behavior has become crucial. Traditional methods for anomaly detection require collecting data from these devices, raising concerns about privacy and data security. Federated Learning (FL) solves this issue by allowing each device to train its model locally and share only the model updates, not the data itself. This project applies FL to build an anomaly detection system for IoT devices, ensuring privacy, fast model training, and improved performance across different devices.
+
 ## Problem Statement
-As IoT devices proliferate, securing these devices and detecting network anomalies become paramount. Traditional methods require transferring large amounts of personal data, raising privacy concerns. This project leverages **Federated Learning (FL)** with deep auto-encoder models to detect anomalies in a decentralized manner, ensuring data privacy while maintaining model performance. Our method improves detection by combining techniques such as **client selection**, **retraining**, and **FedAvgM aggregation**.
+IoT devices are vulnerable to network attacks, but detecting these anomalies while preserving privacy is a challenge. Traditional methods require data sharing, which can expose sensitive information. This project explores using **Federated Learning** to develop an anomaly detection model that maintains privacy and ensures high performance across various IoT devices.
 
 ## Table of Contents
-- [Overview](#overview)
+- [Motivation](#motivation)
 - [System Architecture](#system-architecture)
 - [Anomaly Detection Process](#anomaly-detection-process)
 - [Methods](#methods)
@@ -15,47 +18,47 @@ As IoT devices proliferate, securing these devices and detecting network anomali
   - [Datasets & Tutorials](#datasets--tutorials)
 - [Results](#results)
   - [FedAvg vs FedAvgM](#fedavg-vs-fedavgm)
-  - [Retraining Impact](#retraining-impact)
+  - [Impact of Retraining](#impact-of-retraining)
   - [FL vs Non-FL Comparison](#fl-vs-non-fl-comparison)
 - [Conclusion](#conclusion)
 
-## Overview
-This project implements a Federated Learning-based approach using deep auto-encoders for IoT anomaly detection. The focus is on maintaining privacy, optimizing training processes with client selection and retraining, and using the **FedAvgM** aggregation technique to ensure the generalization of the model across heterogeneous IoT devices.
+## Motivation
+Security in IoT devices is critical, as these devices often handle sensitive data, such as camera footage, home automation systems, and personal health information. Traditional centralized models for anomaly detection require data to be uploaded to a server, risking data privacy and security breaches. **Federated Learning** offers a solution by keeping data on the device and only sharing model updates, allowing privacy-preserving training while still building an effective anomaly detection model. This project is motivated by the need for privacy, security, and efficient anomaly detection in IoT environments.
 
 ## System Architecture
-The system comprises client-side model training on IoT devices, with **Federated Learning** to aggregate global updates via the **FedAvgM** algorithm. A **retraining** process ensures model robustness, particularly when dealing with non-IID datasets. This decentralized learning system is scalable and focuses on privacy preservation.
+The system is designed using Federated Learning (FL), where local models are trained on IoT devices and aggregated on a central server to create a global model. Each device shares only its model parameters, protecting the underlying data. The aggregation method used is **FedAvgM**, which is an improvement over the basic FedAvg algorithm. Additionally, techniques like **retraining** and **partial client selection** are applied to improve model robustness and efficiency, especially with non-IID (non-independent, identically distributed) data.
 
 Key Components:
-- **Federated Learning**: Aggregation of model parameters from individual IoT devices.
-- **FedAvgM Algorithm**: Improves model performance by addressing heterogeneity.
-- **Retraining**: Additional training to handle non-IID data.
-- **Client Selection**: Random partial device selection for efficient communication rounds.
+- **Local Training**: Each IoT device trains its model on its local data.
+- **Model Updates**: Devices send their model updates (weights) to the global server.
+- **Federated Aggregation**: The global server aggregates updates using FedAvgM to produce a more general model.
+- **Retraining & Client Selection**: Further improvement is made by retraining models and selecting a subset of devices for each round of communication.
 
 ## Anomaly Detection Process
-1. **Local Training**: Each IoT device trains a local deep auto-encoder on network traffic data.
-2. **Model Updates**: The weights of each model are sent to the global server for aggregation.
-3. **Federated Aggregation**: The global server uses **FedAvgM** or **FedAvg** to combine model updates.
-4. **Retraining & Selection**: Models are retrained and partially selected for optimized performance.
-5. **Anomaly Detection**: After training, the final model detects anomalies on both the client and new devices.
+1. **Local Training**: IoT devices train local models using deep auto-encoders on their own network data.
+2. **Model Updates**: Only the model parameters are shared with the global server.
+3. **Global Aggregation**: The global model is updated with the new parameters using the **FedAvgM** algorithm.
+4. **Retraining & Selection**: Retraining helps refine the model's performance, and client selection ensures efficient updates.
+5. **Anomaly Detection**: The trained model detects anomalies, improving with every communication round.
 
 ## Methods
 
 ### Client Selection
-To improve model efficiency, not all clients participate in every communication round. A subset of devices is randomly selected, minimizing the non-IID dataset impact and reducing communication overhead.
+Not all devices are involved in every communication round. A subset is selected randomly, which helps improve training speed and reduce communication overhead. This random selection also ensures the model can generalize better across devices.
 
 ### Retraining Process
-Retraining adds robustness by addressing the non-IID nature of client datasets. In each round, a random subset of the benign training data is used for retraining, and the local models are updated before aggregation.
+To handle non-IID data (when data across devices is different), retraining is done periodically to improve the model's accuracy and robustness. Each client retrains its model on new or selected local data, and the updates are incorporated into the global model during the aggregation process.
 
 ## Resources
 
 ### Hardware & Software
-Experiments were run on Google Colab with the following setup:
+The experiments were conducted using a virtual environment on Google Colab, with the following setup:
 
 **Hardware**:
 - **CPU**: Intel(R) Xeon(R) @ 2.30GHz
 - **GPU**: Tesla K80
-- **Memory**: 12.7 GB
-- **Disk**: 69 GB
+- **Memory**: 12.7 GB RAM
+- **Disk**: 69 GB storage
 
 **Software**:
 - Python 3.7.10
@@ -65,22 +68,24 @@ Experiments were run on Google Colab with the following setup:
 - Scikit-learn 0.22.2
 
 ### Datasets & Tutorials
-- **Kaggle Dataset**: [N-BaIoT](https://www.kaggle.com/mkashifn/nbaiot-dataset)
+The data used for training came from the **N-BaIoT dataset**, which includes IoT network traffic data.
+
+- **Dataset**: [N-BaIoT Dataset on Kaggle](https://www.kaggle.com/mkashifn/nbaiot-dataset)
 - **Federated Learning Tutorial**: [Udacity FL Course](https://classroom.udacity.com/courses/ud185)
 - **PyTorch Tutorial**: [PyTorch Official](https://pytorch.org/tutorials/)
 
 ## Results
 
 ### FedAvg vs FedAvgM
-A comparison between **FedAvg** and **FedAvgM** with retraining (FRN vs MRN) shows that **FedAvgM** outperforms **FedAvg**, particularly in terms of **FPR** and **F1 score**, making it more suitable for our anomaly detection task.
+Comparing **FedAvg** with **FedAvgM** (both with retraining) shows that **FedAvgM** performs better, particularly in reducing false positives (lower FPR) and achieving a higher F1 score, indicating better anomaly detection.
 
 | Method | Avg TPR | Avg FPR | Avg F1 Score | Time (mins) |
 |--------|---------|---------|--------------|-------------|
 | FRN    | 0.9009  | 0.03498 | 93.073       | 41.7        |
 | MRN    | 0.9009  | 0.02189 | 93.096       | 48.0        |
 
-### Retraining Impact
-Comparing **FedAvgM** with retraining (MRN) vs without retraining (MNN), the performance metrics remain similar, but **retraining** adds time overhead, suggesting that **no retraining** is more efficient.
+### Impact of Retraining
+By comparing **FedAvgM** with and without retraining (MRN vs MNN), we found that retraining has a minimal impact on the final performance metrics. However, skipping retraining reduces the training time significantly, making it more efficient.
 
 | Method | Avg TPR | Avg FPR | Avg F1 Score | Time (mins) |
 |--------|---------|---------|--------------|-------------|
@@ -88,7 +93,7 @@ Comparing **FedAvgM** with retraining (MRN) vs without retraining (MNN), the per
 | MNN    | 0.9009  | 0.02189 | 93.096       | 36.4        |
 
 ### FL vs Non-FL Comparison
-The **Federated Learning (FL)** model significantly outperforms the **Non-FL** model in both **TPR** and **F1 score**, while also offering faster training times. The FL model's performance in real-time detection tasks is crucial for IoT anomaly detection.
+The Federated Learning model (FL) outperforms the Non-FL model in terms of accuracy and speed. The FL model's training is faster and offers better privacy, as no raw data is shared between devices.
 
 | Model   | Avg TPR | Avg FPR | Avg F1 Score | Time (mins) |
 |---------|---------|---------|--------------|-------------|
@@ -96,7 +101,7 @@ The **Federated Learning (FL)** model significantly outperforms the **Non-FL** m
 | Non-FL  | 0.90076 | 0.02232 | 93.095       | 3109        |
 
 ## Conclusion
-This project demonstrates the superiority of Federated Learning over traditional centralized learning in terms of privacy, security, and model performance. Through techniques like client selection and retraining, the FL model becomes more robust against non-IID data and suitable for real-world IoT anomaly detection.
+The Federated Learning approach provides a robust and secure solution for anomaly detection in IoT devices. By keeping the data on devices and only sharing model updates, FL ensures privacy and security while improving detection performance. Through client selection, retraining, and the use of **FedAvgM**, the model is efficient and generalizes well across multiple devices.
 
-For more details on the code and implementation, feel free to explore the project repository.
+Explore the code and further details in the repository for more insights.
 
