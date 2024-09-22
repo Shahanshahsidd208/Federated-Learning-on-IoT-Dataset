@@ -1,7 +1,7 @@
 # Federated Learning for IoT Anomaly Detection
 
 ## Introduction
-With the rapid increase of IoT (Internet of Things) devices, protecting them from cyber threats and detecting unusual network behavior has become crucial. Traditional methods for anomaly detection require collecting data from these devices, raising concerns about privacy and data security. Federated Learning (FL) solves this issue by allowing each device to train its model locally and share only the model updates, not the data itself. This project applies FL to build an anomaly detection system for IoT devices, ensuring privacy, fast model training, and improved performance across different devices.
+paste here increase of IoT (Internet of Things) devices, protecting them from cyber threats and detecting unusual network behavior has become crucial. Traditional methods for anomaly detection require collecting data from these devices, raising concerns about privacy and data security. Federated Learning (FL) solves this issue by allowing each device to train its model locally and share only the model updates, not the data itself. This project applies FL to build an anomaly detection system for IoT devices, ensuring privacy, fast model training, and improved performance across different devices.
 
 ## Problem Statement
 IoT devices are  vulnerable to network attacks, but detecting these anomalies while preserving privacy is a challenge. Traditional methods require data sharing, which can expose sensitive information. This project explores using **Federated Learning** to develop an anomaly detection model that maintains privacy and ensures high performance across various IoT devices.
