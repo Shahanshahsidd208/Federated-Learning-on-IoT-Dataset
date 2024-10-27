@@ -26,6 +26,8 @@ IoT devices are  vulnerable to network attacks, but detecting these anomalies wh
 Security in IoT devices is critical, as these devices often handle sensitive data, such as camera footage, home automation systems, and personal health information. Traditional centralized models for anomaly detection require data to be uploaded to a server, risking data privacy and security breaches. **Federated Learning** offers a solution by keeping data on the device and only sharing model updates, allowing privacy-preserving training while still building an effective anomaly detection model. This project is motivated by the need for privacy, security, and efficient anomaly detection in IoT environments.
 
 ## System Architecture
+![archi](https://github.com/user-attachments/assets/2506023b-e258-4130-8dac-89ff2a7a4e40)
+
 The system is designed using Federated Learning (FL), where local models are trained on IoT devices and aggregated on a central server to create a global model. Each device shares only its model parameters, protecting the underlying data. The aggregation method used is **FedAvgM**, which is an improvement over the basic FedAvg algorithm. Additionally, techniques like **retraining** and **partial client selection** are applied to improve model robustness and efficiency, especially with non-IID (non-independent, identically distributed) data.
 
 Key Components:
